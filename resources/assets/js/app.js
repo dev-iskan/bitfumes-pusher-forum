@@ -12,8 +12,7 @@ import Vuetify from 'vuetify'
 import router from './router'
 import User from './helpers/User'
 window.User = User;
-
-console.log(User.id());
+window.EventBus = new Vue();
 Vue.use(Vuetify);
 /**
  * Next, we will create a fresh Vue application instance and attach it to

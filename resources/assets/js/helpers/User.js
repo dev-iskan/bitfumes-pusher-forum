@@ -3,16 +3,37 @@ import AppStorage from './AppStorage'
 
 class User {
     login (form) {
-        axios.post('/api/auth/login', form)
-            .then(res=>this.responseAfterLogin(res))
-            .catch(err=>{console.log(err.response.data)})
+        return new Promise((resolve, reject) => {
+            axios.post('/api/auth/login', form)
+                .then(res=>{
+                    this.responseAfterLogin(res);
+                    resolve();
+                })
+                .catch(err=>{
+                    reject(err)
+                })
+        })
+    }
+
+    signup (form) {
+        return new Promise((resolve, reject) => {
+            axios.post('/api/auth/signup', form)
+                .then(res=>{
+                    this.responseAfterLogin(res);
+                    resolve();
+                })
+                .catch(err=> {
+                    reject(err.response.data.errors)
+                })
+        })
     }
 
     responseAfterLogin (res) {
         const access_token = res.data.access_token;
         const username = res.data.user;
         if(Token.isValid(access_token)) {
-            AppStorage.store(username, access_token)
+            AppStorage.store(username, access_token);
+            window.location = '/forum'
         }
     }
 
@@ -30,7 +51,8 @@ class User {
     }
 
     logout () {
-        AppStorage.clear()
+        AppStorage.clear();
+        window.location = '/forum'
     }
 
     name () {

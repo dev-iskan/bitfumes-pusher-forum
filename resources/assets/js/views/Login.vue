@@ -22,12 +22,14 @@
                                 label="Пароль *"
                                 )
                         v-card-actions(class="pa-3")
-                            v-layout(align-center)
+                            v-layout(align-center row wrap)
                                 v-flex(xs12)
                                     div(class="pa-1")
                                         v-btn(color="primary" style="width: 100%" @click="login") Войти
+                                v-flex(xs12)
+                                    div(class="pa-1")
+                                        v-btn(flat style="width: 100%" to="/signup") Регистрация
 </template>
-
 <script>
     export default {
         data () {
@@ -41,6 +43,12 @@
         methods: {
             login () {
                 User.login(this.form)
+                    .then(()=> {
+                        this.$router.push('Forum');
+                    })
+                    .catch(errors => {
+                        console.log(errors.response.data)
+                    })
             }
         }
     }
