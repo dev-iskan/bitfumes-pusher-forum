@@ -11,6 +11,12 @@ import  Vue from 'vue';
 import Vuetify from 'vuetify'
 import router from './router'
 import User from './helpers/User'
+import VueSimplemde from 'vue-simplemde'
+import 'simplemde/dist/simplemde.min.css'
+import md from 'marked'
+
+window.md = md;
+Vue.use(VueSimplemde);
 window.User = User;
 window.EventBus = new Vue();
 Vue.use(Vuetify);

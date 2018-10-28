@@ -21,7 +21,7 @@
                     },
                     {
                         title:'Ask question',
-                        to: null,
+                        to: '/ask',
                         show: User.loggedIn()
                     },
                     {

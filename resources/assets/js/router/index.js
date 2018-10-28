@@ -7,6 +7,8 @@ import Signup from '../views/Signup'
 import Logout from '../views/Logout'
 import AuthExist from './AuthExist'
 import AuthLogged from "./AuthLogged";
+import Read from "../views/Read";
+import Create from "../views/Create";
 Vue.use(VueRouter);
 
 export default new VueRouter ({
@@ -15,6 +17,16 @@ export default new VueRouter ({
             path: '/forum',
             name: 'Forum',
             component: Forum
+        },
+        {
+            path: '/question/:slug',
+            name: 'Read',
+            component: Read
+        },
+        {
+            path: '/ask',
+            name: 'Create',
+            component: Create
         },
         {
             path: '/category',
