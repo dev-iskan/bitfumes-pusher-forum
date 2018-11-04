@@ -1,14 +1,15 @@
 <template lang="pug">
     v-container(fluid grid-list-md)
         v-layout(row wrap)
-            v-flex(x8)
+            v-flex(xs8)
                 question(v-for="(question, index) in questions" :key="index" :question="question")
             v-flex(xs4)
-
+                app-sidebar
 </template>
 
 <script>
     import Question from '../components/Question'
+    import AppSidebar from '../components/AppSidebar'
     export default {
         data () {
             return {
@@ -16,7 +17,8 @@
             }
         },
         components: {
-            Question
+            Question,
+            AppSidebar
         },
         created () {
             axios.get('/api/question')
