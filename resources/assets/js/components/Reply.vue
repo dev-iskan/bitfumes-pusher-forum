@@ -3,6 +3,8 @@
         v-card-title
             div.headline {{data.user}}
             div(class="ml-2") said {{data.created_at}}
+            v-spacer
+            like(:reply="data")
         v-divider
         div(v-if="editing")
             markdown-editor(v-model="updateReply")
@@ -25,7 +27,11 @@
 
 <script>
     import User from '../helpers/User'
+    import Like from './Like'
     export default {
+        components : {
+            Like
+        },
         props: ['data', 'index', 'slug'],
         data () {
             return {
