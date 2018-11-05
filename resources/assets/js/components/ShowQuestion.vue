@@ -5,9 +5,9 @@
                 div.headline {{question.title}}
                 span.grey--text {{question.user}} said {{question.created_at}}
             v-spacer
-            v-btn(color="teal" dark) 5 Replies
+            v-btn(color="teal" dark) {{question.reply_count}} replies
         v-card-text(v-html="body")
-        v-card-actions(v-if="own")
+        v-card-actions
             v-spacer
             v-btn(icon small @click="edit")
                 v-icon(color="orange") edit
@@ -18,11 +18,6 @@
 <script>
     export default {
         props: ['question'],
-        data () {
-            return {
-                own : User.own(this.question.user_id)
-            }
-        },
         computed: {
             body () {
                 return md.parse(this.question.body)

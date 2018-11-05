@@ -14,6 +14,8 @@ class Question extends Model
         });
     }
 
+    protected $with = ['replies'];
+
     protected $fillable = [
         'title',
         'slug',
@@ -34,7 +36,7 @@ class Question extends Model
     }
 
     public function replies () {
-        return $this->hasMany(Reply::class);
+        return $this->hasMany(Reply::class)->latest();
     }
 
     public function category(){

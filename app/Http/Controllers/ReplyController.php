@@ -6,6 +6,7 @@ use App\Http\Resources\ReplyResource;
 use App\Question;
 use App\Reply;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ReplyController extends Controller
 {
@@ -40,8 +41,8 @@ class ReplyController extends Controller
      */
     public function store(Question $question, Request $request)
     {
-        $question->replies()->create($request->all());
-        return response('Created', 201);
+        $reply = $question->replies()->create($request->all());
+        return response(['reply' => new ReplyResource($reply)], Response::HTTP_CREATED);
     }
 
     public function show(Question $question, Reply $reply)
