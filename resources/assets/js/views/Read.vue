@@ -7,7 +7,7 @@
                     show-question(:question="question" v-else)
                     v-container
                         replies(:replies="question.replies" :slug="question.slug")
-                        new-reply(:slug="question.slug")
+                        new-reply(:slug="question.slug" v-if="loggedIn")
 </template>
 
 <script>
@@ -15,11 +15,13 @@
     import Replies from '../components/Replies'
     import EditQuestion from '../components/EditQuestion'
     import NewReply from '../components/NewReply'
+    import User from "../helpers/User";
     export default {
         data () {
             return {
                 question : null,
-                editing: null
+                editing: null,
+                loggedIn: User.loggedIn()
             }
         },
         created () {

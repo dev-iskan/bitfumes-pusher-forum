@@ -3,13 +3,14 @@
         v-toolbar-title
             router-link(tag="span" to="/" style="cursor: pointer;") Pusher
         v-spacer
+        app-notification
         v-toolbar-items(class="hidden-sm-and-down")
             v-btn(:to="item.to" flat v-for="(item, index) in items" :key="index" v-if="item.show") {{item.title}}
 </template>
 
 <script>
     import User from "../helpers/User";
-
+    import AppNotification from './AppNotification'
     export default {
         data () {
             return {
@@ -46,6 +47,9 @@
                     }
                 ]
             }
+        },
+        components: {
+            AppNotification
         },
         created () {
             EventBus.$on('logout', () => {

@@ -14,6 +14,10 @@ Vue.use(VueRouter);
 export default new VueRouter ({
     routes: [
         {
+            path: '/',
+            redirect: '/forum'
+        },
+        {
             path: '/forum',
             name: 'Forum',
             component: Forum

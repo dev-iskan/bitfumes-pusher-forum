@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +17,7 @@ Route::group([
 //    'middleware' => 'api',
     'prefix' => 'auth'
 
-], function ($router) {
+], function () {
 
     Route::post('login', 'AuthController@login');
     Route::post('signup', 'AuthController@signup');
@@ -26,7 +25,6 @@ Route::group([
     Route::post('refresh', 'AuthController@refresh');
     Route::get('me', 'AuthController@me');
     Route::post('payload', 'AuthController@payload');
-
 });
 
 Route::apiResource('/question', 'QuestionController');
@@ -34,3 +32,5 @@ Route::apiResource('/category', 'CategoryController');
 Route::apiResource('/question/{question}/reply', 'ReplyController');
 Route::post('/reply/{reply}/like', 'LikeController@likeIt');
 Route::delete('/reply/{reply}/dislike', 'LikeController@unlikeIt');
+Route::post('/notifications', 'NotificationController@index');
+Route::post('/markAsRead', 'NotificationController@markAsRead');
