@@ -21,6 +21,14 @@
                 return this.liked? 'red' : 'red lighten-4'
             }
         },
+        created () {
+            Echo.channel('like-channel')
+                .listen('LikeEvent', (e) => {
+                    if(this.reply.id == e.id) {
+                        e.type == 1? this.count ++ : this.count --
+                    }
+                });
+        },
         methods: {
             likeIt () {
                 if(User.loggedIn()) {
