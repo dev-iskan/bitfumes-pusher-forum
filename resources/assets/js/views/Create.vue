@@ -9,12 +9,15 @@
                     v-card-text
                         v-form
                             v-container
+                                span(class="red--text" v-if="errors.title") {{errors.title[0]}}
                                 v-text-field(label="Title" v-model="title" type="text" required)
+                                span(class="red--text" v-if="errors.category_id") {{errors.category_id[0]}}
                                 v-select(v-model="category_id" label="Category" :items="categories" item-text="title" item-value="id")
+                                span(class="red--text" v-if="errors.body") {{errors.body[0]}}
                                 markdown-editor(v-model="body")
                     v-card-actions
                         v-spacer
-                        v-btn(color="green" dark @click.prevent="create") Submit
+                        v-btn(color="blue" @click.prevent="create" :disabled="disabled" ) Submit
 </template>
 
 <script>
@@ -25,7 +28,7 @@
                 category_id: null,
                 categories: null,
                 body: null,
-                errors: null
+                errors: {}
             }
         },
         created () {
@@ -47,6 +50,11 @@
                     .catch(err => {
                         this.errors = err.response.data.errors
                     })
+            }
+        },
+        computed: {
+            disabled () {
+                return !(this.title && this.body && this.category_id)
             }
         }
     }

@@ -1,5 +1,5 @@
 <template lang="pug">
-    v-toolbar
+    v-toolbar(color="indigo" dark)
         v-toolbar-title
             router-link(tag="span" to="/" style="cursor: pointer;") Pusher
         v-spacer

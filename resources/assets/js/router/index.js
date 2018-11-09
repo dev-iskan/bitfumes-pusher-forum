@@ -9,13 +9,15 @@ import AuthExist from './AuthExist'
 import AuthLogged from "./AuthLogged";
 import Read from "../views/Read";
 import Create from "../views/Create";
+import Paralax from '../views/Paralax'
 Vue.use(VueRouter);
 
 export default new VueRouter ({
     routes: [
         {
             path: '/',
-            redirect: '/forum'
+            name: 'Paralax',
+           component: Paralax
         },
         {
             path: '/forum',

@@ -1,5 +1,6 @@
 <template lang="pug">
     v-container(fluid)
+        v-alert(v-if="errors" type="error" :value="true") Write cattegory title
         v-layout(row wrap)
             v-flex(xs12)
                 v-card
@@ -13,7 +14,7 @@
                     v-card-actions
                         v-spacer
                         v-btn(color="pink" v-if="editing" dark @click.prevent="update") Update
-                        v-btn(color="green" v-else dark @click.prevent="create") Submit
+                        v-btn(color="blue" v-else @click.prevent="create" :disabled="disabled") Submit
             v-flex(xs12)
                 v-card
                     v-toolbar(color="indigo" dark dense)
@@ -50,6 +51,11 @@
             } else {
                 axios.get(`/api/category`)
                     .then(res => this.categories = res.data.data)
+            }
+        },
+        computed: {
+            disabled () {
+                return !(this.title)
             }
         },
         methods: {
