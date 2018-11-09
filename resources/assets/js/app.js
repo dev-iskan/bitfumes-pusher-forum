@@ -11,6 +11,7 @@ import  Vue from 'vue';
 import Vuetify from 'vuetify'
 import router from './router'
 import User from './helpers/User'
+import Exception from './helpers/Exception'
 import VueSimplemde from 'vue-simplemde'
 import 'simplemde/dist/simplemde.min.css'
 import md from 'marked'
@@ -20,6 +21,8 @@ Vue.use(VueSimplemde);
 window.User = User;
 window.EventBus = new Vue();
 Vue.use(Vuetify);
+
+window.Exception = Exception
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

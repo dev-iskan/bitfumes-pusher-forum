@@ -8,6 +8,7 @@
                     v-container
                         replies(:replies="question.replies" :slug="question.slug")
                         new-reply(:slug="question.slug" v-if="loggedIn")
+                        router-link(to="/login") Login to Reply
 </template>
 
 <script>
@@ -21,7 +22,12 @@
             return {
                 question : null,
                 editing: null,
-                loggedIn: User.loggedIn()
+                // loggedIn: User.loggedIn()
+            }
+        },
+        computed: {
+            loggedIn () {
+                return User.loggedIn()
             }
         },
         created () {

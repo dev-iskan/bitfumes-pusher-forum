@@ -5,7 +5,7 @@
                 div.headline {{question.title}}
                 span.grey--text {{question.user}} said {{question.created_at}}
             v-spacer
-            v-btn(color="teal" dark) {{question.reply_count}} replies
+            v-btn(color="teal" dark) {{replyCount}} replies
         v-card-text(v-html="body")
         v-card-actions
             v-spacer
@@ -18,10 +18,34 @@
 <script>
     export default {
         props: ['question'],
+        data () {
+            return {
+                replyCount: this.question.reply_count
+            }
+        },
         computed: {
             body () {
                 return md.parse(this.question.body)
             }
+        },
+        created () {
+            EventBus.$on('newReply', () => {
+                this.replyCount++
+            })
+            EventBus.$on('deleteReply', () => {
+                this.replyCount--
+            })
+
+            Echo.private('App.User.' + User.id())
+                .notification((notification) => {
+                    this.replyCount++
+                });
+
+            Echo.channel('deleteReplyChannel')
+                .listen('DeleteReplyEvent', (e) => {
+                    this.replyCount--
+                })
+
         },
         methods: {
             destroy () {

@@ -10558,7 +10558,7 @@ var User = function () {
         value: function hasToken() {
             var storedToken = __WEBPACK_IMPORTED_MODULE_1__AppStorage__["a" /* default */].getToken();
             if (storedToken) {
-                return __WEBPACK_IMPORTED_MODULE_0__Token__["a" /* default */].isValid(storedToken) ? true : false;
+                return __WEBPACK_IMPORTED_MODULE_0__Token__["a" /* default */].isValid(storedToken) ? true : this.logout();
             }
 
             return false;
@@ -37884,12 +37884,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuetify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vuetify__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__router__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_User__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_simplemde__ = __webpack_require__(133);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_simplemde___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vue_simplemde__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_simplemde_dist_simplemde_min_css__ = __webpack_require__(149);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_simplemde_dist_simplemde_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_simplemde_dist_simplemde_min_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_marked__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_marked___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_marked__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__helpers_Exception__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_simplemde__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_simplemde___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_vue_simplemde__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_simplemde_dist_simplemde_min_css__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_simplemde_dist_simplemde_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_simplemde_dist_simplemde_min_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_marked__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_marked___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_marked__);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -37907,11 +37908,14 @@ __webpack_require__(23);
 
 
 
-window.md = __WEBPACK_IMPORTED_MODULE_6_marked___default.a;
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_vue_simplemde___default.a);
+
+window.md = __WEBPACK_IMPORTED_MODULE_7_marked___default.a;
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_5_vue_simplemde___default.a);
 window.User = __WEBPACK_IMPORTED_MODULE_3__helpers_User__["a" /* default */];
 window.EventBus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuetify___default.a);
+
+window.Exception = __WEBPACK_IMPORTED_MODULE_4__helpers_Exception__["a" /* default */];
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -96308,7 +96312,19 @@ var Token = function () {
     }, {
         key: 'decode',
         value: function decode(payload) {
-            return JSON.parse(atob(payload));
+            if (this.isBase64(payload)) {
+                return JSON.parse(atob(payload));
+            }
+            return false;
+        }
+    }, {
+        key: 'isBase64',
+        value: function isBase64(str) {
+            try {
+                return btoa(atob(str)).replace(/=/g, "") == str;
+            } catch (err) {
+                return false;
+            }
         }
     }]);
 
@@ -97570,7 +97586,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -97602,6 +97618,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -97612,9 +97629,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             question: null,
-            editing: null,
-            loggedIn: __WEBPACK_IMPORTED_MODULE_4__helpers_User__["a" /* default */].loggedIn()
+            editing: null
+            // loggedIn: User.loggedIn()
         };
+    },
+
+    computed: {
+        loggedIn: function loggedIn() {
+            return __WEBPACK_IMPORTED_MODULE_4__helpers_User__["a" /* default */].loggedIn();
+        }
     },
     created: function created() {
         this.listen();
@@ -97734,7 +97757,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -97765,17 +97788,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['question'],
+    data: function data() {
+        return {
+            replyCount: this.question.reply_count
+        };
+    },
+
     computed: {
         body: function body() {
             return md.parse(this.question.body);
         }
     },
+    created: function created() {
+        var _this = this;
+
+        EventBus.$on('newReply', function () {
+            _this.replyCount++;
+        });
+        EventBus.$on('deleteReply', function () {
+            _this.replyCount--;
+        });
+
+        Echo.private('App.User.' + User.id()).notification(function (notification) {
+            _this.replyCount++;
+        });
+
+        Echo.channel('deleteReplyChannel').listen('DeleteReplyEvent', function (e) {
+            _this.replyCount--;
+        });
+    },
+
     methods: {
         destroy: function destroy() {
-            var _this = this;
+            var _this2 = this;
 
             axios.delete('/api/question/' + this.question.slug).then(function (response) {
-                _this.$router.push('/forum');
+                _this2.$router.push('/forum');
             }).catch(function (err) {
                 console.log(err.response.data);
             });
@@ -97814,7 +97862,7 @@ var render = function() {
           ]),
           _c("v-spacer"),
           _c("v-btn", { attrs: { color: "teal", dark: "dark" } }, [
-            _vm._v(_vm._s(_vm.question.reply_count) + " replies")
+            _vm._v(_vm._s(_vm.replyCount) + " replies")
           ])
         ],
         1
@@ -99070,7 +99118,10 @@ var render = function() {
                           ? _c("new-reply", {
                               attrs: { slug: _vm.question.slug }
                             })
-                          : _vm._e()
+                          : _vm._e(),
+                        _c("router-link", { attrs: { to: "/login" } }, [
+                          _vm._v("Login to Reply")
+                        ])
                       ],
                       1
                     )
@@ -106142,7 +106193,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -106200,6 +106251,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.read = data.data.read;
                 _this2.unread = data.data.unread;
                 _this2.unreadCount = data.data.unread.length;
+            }).catch(function (error) {
+                return Exception.handle(error);
             });
         },
         readNotification: function readNotification(notification) {
@@ -106518,6 +106571,45 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 174 */,
+/* 175 */,
+/* 176 */,
+/* 177 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__User__ = __webpack_require__(5);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+var Exception = function () {
+    function Exception() {
+        _classCallCheck(this, Exception);
+    }
+
+    _createClass(Exception, [{
+        key: "handle",
+        value: function handle(error) {
+            this.isExpired(error.response.data.error);
+        }
+    }, {
+        key: "isExpired",
+        value: function isExpired(error) {
+            if (error == 'token is expired') {
+                __WEBPACK_IMPORTED_MODULE_0__User__["a" /* default */].logout();
+            }
+        }
+    }]);
+
+    return Exception;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Exception = new Exception());
 
 /***/ })
 /******/ ]);
