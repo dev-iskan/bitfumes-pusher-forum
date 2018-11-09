@@ -37990,7 +37990,12 @@ window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
     broadcaster: 'pusher',
     key: "2686403fb3752bc07d1c",
     cluster: "ap2",
-    encrypted: true
+    encrypted: true,
+    auth: {
+        headers: {
+            Authorization: jwt
+        }
+    }
 });
 
 /***/ }),
@@ -97940,7 +97945,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -97953,11 +97958,13 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Reply__ = __webpack_require__(106);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Reply___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Reply__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_User__ = __webpack_require__(5);
 //
 //
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -97988,6 +97995,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }).catch(function (err) {
                     return console.log(err);
                 });
+            });
+            Echo.private('App.User.' + __WEBPACK_IMPORTED_MODULE_1__helpers_User__["a" /* default */].id()).notification(function (notification) {
+                _this.content.unshift(notification.reply);
+            });
+            Echo.channel('deleteReplyChannel').listen('DeleteReplyEvent', function (e) {
+                for (var index = 0; index < _this.content.length; index++) {
+                    if (_this.content[index].id == e.id) {
+                        _this.content.splice(index, 1);
+                    }
+                }
             });
         }
     }
@@ -106125,7 +106142,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -106163,28 +106180,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     created: function created() {
+        var _this = this;
+
         if (__WEBPACK_IMPORTED_MODULE_0__helpers_User__["a" /* default */].loggedIn()) {
             this.getNotifications();
         }
+
+        Echo.private('App.User.' + __WEBPACK_IMPORTED_MODULE_0__helpers_User__["a" /* default */].id()).notification(function (notification) {
+            _this.unread.unshift(notification);
+            _this.unreadCount++;
+        });
     },
 
     methods: {
         getNotifications: function getNotifications() {
-            var _this = this;
+            var _this2 = this;
 
             axios.post('/api/notifications').then(function (data) {
-                _this.read = data.data.read;
-                _this.unread = data.data.unread;
-                _this.unreadCount = data.data.unread.length;
+                _this2.read = data.data.read;
+                _this2.unread = data.data.unread;
+                _this2.unreadCount = data.data.unread.length;
             });
         },
         readNotification: function readNotification(notification) {
-            var _this2 = this;
+            var _this3 = this;
 
             axios.post('/api/markAsRead/', { id: notification.id }).then(function (res) {
-                _this2.unread.splice(notification, 1);
-                _this2.read.push(notification);
-                _this2.unread.count--;
+                _this3.unread.splice(notification, 1);
+                _this3.read.push(notification);
+                _this3.unread.count--;
             });
         }
     },
