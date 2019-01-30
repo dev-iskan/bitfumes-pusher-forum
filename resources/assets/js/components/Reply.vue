@@ -11,7 +11,7 @@
         v-card-text(v-html="reply" v-else)
         v-divider
         v-card-actions(v-if="own")
-            v-layout(v-if="this.editing")
+            v-layout(v-if="editing")
                 v-spacer
                 v-btn(icon)
                     v-icon(color="green" @click="update") save
